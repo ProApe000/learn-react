@@ -2,6 +2,7 @@ const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
+const { runtime } = require("webpack");
 module.exports = {
   entry: path.resolve(__dirname, "../src/index.tsx"),
   resolve: {
@@ -29,7 +30,7 @@ module.exports = {
                 },
               ],
               ["@babel/preset-typescript"],
-              ["@babel/preset-react"],
+              ["@babel/preset-react", { runtime: "automatic" }],
             ],
           },
         },
@@ -79,7 +80,9 @@ module.exports = {
         test: /\.(css|less)$/,
         exclude: /node_modules/,
         use: [
-          MiniCssExtractPlugin.loader,
+          process.env.NODE_ENV === "development"
+            ? "style-loader"
+            : MiniCssExtractPlugin.loader,
           {
             loader: "css-loader",
             options: {
@@ -94,7 +97,10 @@ module.exports = {
             // 他可以帮助将css的一些新特性转成成大多浏览器都认识的css 并且会根据目标浏览器或者运行时的环境添加polyfill
             options: {
               postcssOptions: {
-                plugins: [["postcss-preset-env", {}]],
+                plugins: [
+                  ["autoprefixer", {}],
+                  ["postcss-preset-env", {}],
+                ],
               },
             },
           },
@@ -124,6 +130,6 @@ module.exports = {
   },
   output: {
     path: path.resolve(__dirname, "../dist"),
-    filename: "[name].[hash:8].js",
+    filename: "[name].[contenthash:8].js",
   },
 };

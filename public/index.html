@@ -8,7 +8,48 @@
     />
     <title>my-react</title>
   </head>
+
   <body>
     <div id="app"></div>
+    <form
+      action="your-upload-endpoint"
+      method="post"
+      enctype="multipart/form-data"
+    >
+      <input type="file" name="file" />
+      <input type="submit" value="Upload" />
+    </form>
+    <script>
+      const url = "https://ife.bytedance.net/cdn/upload";
+      const formData = new FormData();
+      const form = document.querySelector("form");
+      const fieldInput = document.querySelector('input[type="file"]');
+      console.log("fieldInput", fieldInput);
+      form.addEventListener("submit", (e) => {
+        e.preventDefault();
+        console.log("wc");
+        formData.append("file", fieldInput.files[0]);
+        formData.append("region", "CN");
+        formData.append("dir", "myself/test");
+        formData.append("email", "maxiaowen.112@bytedance.com");
+        fetch(url, {
+          method: "POST",
+          body: formData,
+        })
+          .then((response) => {
+            if (response.ok) {
+              return response.json();
+            } else {
+              throw new Error("not ok");
+            }
+          })
+          .then((data) => {
+            console.log("data", data);
+          })
+          .catch((e) => {
+            console.error(e);
+          });
+      });
+    </script>
   </body>
 </html>
