@@ -4,6 +4,7 @@ import House from "@/assets/images/avator.png";
 import CoverTest from "./CoverTest";
 import { init, delDb, createObjectStore, addBook, getBook, getBookByIndex } from './utils/indexedDB'
 import { useMemo, useState } from "react";
+import TestIDB from "./component/testIDB";
 
 const App = () => {
   const [id, setId] = useState(0)
@@ -35,7 +36,9 @@ const App = () => {
       } >getByIndex</button>
     </div>
   }, [id])
-  return <CoverTest>{renderOp}</CoverTest>;
+  return <div><CoverTest>{renderOp}</CoverTest>
+    <TestIDB /></div>
+
 };
 
 export default App;
