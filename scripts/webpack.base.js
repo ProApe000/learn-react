@@ -3,6 +3,7 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 const { runtime } = require("webpack");
+const { options } = require("less");
 module.exports = {
   entry: path.resolve(__dirname, "../src/index.tsx"),
   resolve: {
@@ -78,19 +79,19 @@ module.exports = {
       // },
       {
         test: /\.(css|less)$/,
-        exclude: /node_modules/,
+        // exclude: /node_modules/,
         use: [
           process.env.NODE_ENV === "development"
             ? "style-loader"
             : MiniCssExtractPlugin.loader,
           {
             loader: "css-loader",
-            options: {
-              modules: {
-                localIdentName: "[name]_[local]--[contenthash:base64:5]", // 用于配置css Module中的类名生成规则 在css module中类名将会自动转换 以避免全局作用域的命名冲突 name时样式表文件名称 local是样式类名 然后加上基于内容生成的hash值
-              },
-              esModule: false,
-            },
+            // options: {
+            //   modules: {
+            //     localIdentName: "[name]_[local]--[contenthash:base64:5]", // 用于配置css Module中的类名生成规则 在css module中类名将会自动转换 以避免全局作用域的命名冲突 name时样式表文件名称 local是样式类名 然后加上基于内容生成的hash值
+            //   },
+            //   esModule: false,
+            // },
           },
           {
             loader: "postcss-loader",
@@ -104,8 +105,14 @@ module.exports = {
               },
             },
           },
-          "less-loader",
-          "css-modules-typescript-loader",
+          {
+            loader: "less-loader",
+            options: {
+              lessOptions: {
+                javascriptEnabled: true,
+              },
+            },
+          },
         ],
       },
     ],
