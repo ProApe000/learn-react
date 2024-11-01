@@ -4,7 +4,7 @@ export function init(name: string, version = 1) {
   return new Promise((resolve, reject) => {
     openRequest = indexedDB.open(name, version);
     openRequest.onsuccess = function (event) {
-      console.log("onsuccess1");
+      console.log("onsuccess1", event);
       db = openRequest?.result;
       db.onversionchange = function () {
         db?.close();
@@ -33,7 +33,7 @@ export function init(name: string, version = 1) {
     };
 
     openRequest.onerror = function (event) {
-      console.log("onerror1");
+      console.log("onerror1", event);
       reject(new Error("indexedDB open error"));
     };
   });
@@ -100,9 +100,9 @@ export function getBook(id: number) {
     if (db) {
       const transaction = db.transaction(["book"], "readonly");
       const books = transaction.objectStore("book");
-      // const req = books.get(id);
+      const req = books.get(id);
       // const req = books.getAll(IDBKeyRange.bound(2, 5));
-      const req = books.openCursor();
+      // const req = books.openCursor();
       req.onsuccess = function () {
         resolve(req.result);
       };

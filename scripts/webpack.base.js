@@ -9,7 +9,7 @@ module.exports = {
   resolve: {
     extensions: [".mjs", ".js", ".json", ".jsx", ".ts", ".tsx"], //指定当文件没有书写后缀时 以什么样的后缀去查找
     alias: {
-      "@": path.resolve(__dirname, "../"),
+      "@": path.resolve(__dirname, "../src"),
     },
   },
   module: {

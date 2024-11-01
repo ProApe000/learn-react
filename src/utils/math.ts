@@ -1,0 +1,26 @@
+export const sum = (a: number, b: number): number => {
+  return a + b;
+};
+
+/**
+ * @description 访问嵌套对象
+ */
+export const get = <T>(
+  object: any,
+  path: Array<string>,
+  defaultValue?: T
+): T => {
+  const result = path.reduce(
+    (obj, key) => (obj !== undefined ? obj[key] : undefined),
+    object
+  );
+
+  return result !== undefined ? result : defaultValue;
+};
+
+export const getUserInfo = () => {
+  return {
+    name: "moji",
+    age: 24,
+  };
+};
