@@ -12,10 +12,12 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@byted-house/form-draft": "0.2.0-beta.3",
     "@ecom/auxo": "^3.9.7",
     "@ecom/auxo-pro-form": "^4.16.2",
     "@ecom/logistics-supply-chain-form-template": "^0.0.16",
     "@ecom/only-search-template": "^4.0.16",
+    "@okee-uikit/react": "^1.2.5",
     "babel-plugin-import": "^1.13.8",
     "core-js": "^3.38.1",
     "idb": "^8.0.0",

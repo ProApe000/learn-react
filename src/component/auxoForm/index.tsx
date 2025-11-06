@@ -1,16 +1,49 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Form as AuxoForm } from '@ecom/auxo-pro-form';
 import { Slider, Space, Button, Modal, Form } from '@ecom/auxo';
-import { useAuxoFormDraft } from '@ecom/logistics-supply-chain-form-template';
-import styles from './index.module.less'
+// import { useAuxoFormDraft } from '@ecom/logistics-supply-chain-form-template';
+// import { useFormDraft } from '@byted-house/form-draft';
+import { useOkeeFormDraft } from './useOkeeFormDraft'
+// import styles from './index.module.less'
 import { sum } from '@/utils/math';
-
+import { customDraftUseTipsFun } from './customDraftUseTipsFun'
 const MyForm = () => {
     const [form] = Form.useForm();
-    const { onSubmit, removeDraft } = useAuxoFormDraft('test-draft', form, {
-        userId: '001',
+    // useEffect(() => {
+    //     form?.onValuesChange(() => {
+    //         console.log('changedValues changedValues'); 
+    //     })
+
+    // }, [form])
+    const { onSubmit, removeDraft } = useOkeeFormDraft('test-draft', form, {
         duration: 5,
+        useId: '001',
+        autoApplyModal: false,
+        messageProps: {
+            duration: 60
+        },
+        customMessageTips: (...rest) => customDraftUseTipsFun(null, ...rest),
+        customGetFormDataFun: (form: any) => {
+            console.log('wow field change', form?.getFieldsValue())
+            return form?.getFieldsValue();
+        },
+        customSetFormDataFun: (form: any, data: any) => {
+            console.log('wow form data', form, data)
+            form?.setFieldsValue(data);
+        },
     })
+    // const { onSubmit, removeDraft } = useFormDraft({
+    //     useId: '001',
+    //     autoApplyModal: true,
+    //     customGetFormDataFun: (form: any) => {
+    //         return form?.getFieldsValue();
+    //     },
+    //     customSetFormDataFun: (form: any, data: any) => {
+    //         form?.setFieldsValue(data);
+    //     },
+    //     formInstances: { 'test-draft': form },
+    //     duration: 5,
+    // })
     console.log('sum', sum(1, 2));
     return (
         <div style={{ height: '500px', width: '500px', marginTop: '20px' }}>
@@ -97,8 +130,6 @@ const MyForm = () => {
             </AuxoForm>
 
         </div >
-
-
     );
 };
 

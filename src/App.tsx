@@ -3,15 +3,52 @@ import style from "./index.module.less";
 import House from "@/assets/images/avator.png";
 import CoverTest from "./CoverTest";
 
-import { useMemo, useState } from "react";
+import { useMemo, useState, createContext } from "react";
 import TestIDB from "./component/testIDB";
 import AuxoForm from "./component/auxoForm";
 import MyLink from '@/component/myLink';
+import { Main, Header } from "./component";
 
-const App = () => {
-  return <AuxoForm />
-  // return <MyLink page="www.baidu.com" >baidu</MyLink>
+export type UserContextType = {
+  user: Record<string, string | number>
+  theme: string
+}
+const initUserContextValue = {
+  user: {
 
-};
+  },
+  theme: 'blue'
+}
+// Context 定义
+// export const UserContext = createContext<UserContextType>(initUserContextValue);
+
+export const UserContext = createContext({ name: 'John', age: 25 });
+export const ThemeContext = createContext('light');
+// Provider 组件
+function App() {
+  const [user, setUser] = useState({ name: 'John', age: 25 });
+  const [theme, setTheme] = useState('light');
+  const contextValue = useMemo(() => {
+    return { user, theme }
+  }, [user, theme])
+  return (
+    // <UserContext.Provider value={contextValue}>
+    //   <Header />
+    //   <Main />
+    //   <div onClick={() => {
+    //     setUser({ name: 'John', age: 18 })
+    //   }}>设置名称-{JSON.stringify(user)}</div>
+    // </UserContext.Provider >
+    <UserContext.Provider value={user}>
+      <ThemeContext.Provider value={theme}>
+        <Header />
+        <Main />
+        <div onClick={() => {
+          setUser({ name: 'John', age: 18 })
+        }}>设置名称-{JSON.stringify(user)}</div>
+      </ThemeContext.Provider>
+    </UserContext.Provider>
+  );
+}
 
 export default App;

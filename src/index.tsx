@@ -3,6 +3,10 @@ import * as ReactDOM from "react-dom/client";
 import App from "./App";
 import '@ecom/auxo/es/styles/index.less';
 import '@ecom/auxo-pro-form/es/preset/import/package/all';
+// import valueA from './utils/A'
+// console.log(valueA)
+
+import "./utils/A";
 
 const appElement = document.getElementById("app");
 if (appElement) {
