@@ -57,6 +57,7 @@
     "typings-for-css-modules-loader": "^1.7.0",
     "url-loader": "^4.1.1",
     "webpack": "^5.92.0",
+    "webpack-bundle-analyzer": "^4.10.2",
     "webpack-cli": "^5.1.4",
     "webpack-dev-server": "^5.0.4",
     "webpack-merge": "^5.10.0"
