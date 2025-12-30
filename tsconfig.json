@@ -22,5 +22,5 @@
     "noEmit": true,
     "skipLibCheck": true
   },
-  "include": ["src", "typings"]
+  "include": ["src", "src/typings"]
 }

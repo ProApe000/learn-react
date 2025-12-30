@@ -1,10 +1,7 @@
-@import "./variables.less";
-
 @font-face {
   font-family: "HuSao";
-  src: url("./assets/fonts/胡晓波骚包体.otf");
+  src: url("assets/fonts/胡晓波骚包体.otf");
 }
-
 .myFont {
   font-family: "HuSao";
   font-weight: 500;

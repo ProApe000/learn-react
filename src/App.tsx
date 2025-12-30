@@ -1,25 +1,24 @@
 // import React from "react";
 import style from "./index.module.less";
 import House from "@/assets/images/avator.png";
-import CoverTest from "./CoverTest";
+import { Routes, Route, Link } from 'react-router-dom'
+import routes from "./routes";
+// import CoverTest from "./CoverTest";
 
 import { useMemo, useState, createContext } from "react";
-import TestIDB from "./component/testIDB";
-import AuxoForm from "./component/auxoForm";
-import MyLink from '@/component/myLink';
 import { Main, Header } from "./component";
 
 // 测试worktree
-export type UserContextType = {
-  user: Record<string, string | number>
-  theme: string
-}
-const initUserContextValue = {
-  user: {
+// export type UserContextType = {
+//   user: Record<string, string | number>
+//   theme: string
+// }
+// const initUserContextValue = {
+//   user: {
 
-  },
-  theme: 'blue'
-}
+//   },
+//   theme: 'blue'
+// }
 // Context 定义
 // export const UserContext = createContext<UserContextType>(initUserContextValue);
 
@@ -44,9 +43,22 @@ function App() {
       <ThemeContext.Provider value={theme}>
         <Header />
         <Main />
-        <div onClick={() => {
+        <div className={style.myFont} onClick={() => {
           setUser({ name: 'John', age: 18 })
         }}>设置名称-{JSON.stringify(user)}</div>
+        <img src={House} alt="" />
+        <nav>
+          {routes.map(route => {
+            return <Link to={route.path}>Page{route.path}</ Link>
+          })}
+        </nav>
+        <Routes>
+          {
+            routes.map(route => {
+              return <Route path={route.path} element={<route.component />} />
+            })
+          }
+        </Routes>
       </ThemeContext.Provider>
     </UserContext.Provider>
   );

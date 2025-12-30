@@ -15,10 +15,10 @@ function factorial(num: number): number {
     return num * factorial(num - 1)
 }
 // let color = 'red'
-function displayColor() {
-    alert(this.color)
-}
-displayColor()
+// function displayColor() {
+//     alert(this.color)
+// }
+// displayColor()
 function myAdd(a, b, ...c) {
     // 'use strict'
     if (c instanceof Array && c?.length > 0) {

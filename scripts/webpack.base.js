@@ -4,18 +4,19 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 const { runtime } = require("webpack");
 const { options } = require("less");
+const { loader } = require("mini-css-extract-plugin");
 module.exports = {
   entry: path.resolve(__dirname, "../src/index.tsx"),
   resolve: {
     extensions: [".mjs", ".js", ".json", ".jsx", ".ts", ".tsx"], //指定当文件没有书写后缀时 以什么样的后缀去查找
     alias: {
-      "@": path.resolve(__dirname, "../src"),
+      "@/*": path.resolve(__dirname, "../src/*"),
     },
   },
   module: {
     rules: [
       {
-        test: /.(jsx?)|(tsx?)/,
+        test: /\.(jsx?|tsx?)$/,
         exclude: /node_modules/,
         use: {
           loader: "babel-loader",
@@ -30,14 +31,14 @@ module.exports = {
                   corejs: 3,
                 },
               ],
-              ["@babel/preset-typescript"],
               ["@babel/preset-react", { runtime: "automatic" }],
+              ["@babel/preset-typescript"],
             ],
           },
         },
       },
       {
-        test: /\.(png|svg|jpg|jpeg|gif|webp)/i,
+        test: /\.(jpe?g|png|svg|webp|gif)$/i,
         use: [
           {
             loader: "url-loader",
@@ -46,7 +47,7 @@ module.exports = {
               fallback: {
                 loader: "file-loader",
                 options: {
-                  name: "assets/images/[name].[contenthash:8][ext]",
+                  name: "assets/images/[name]-[contenthash:8].[ext]",
                 },
               },
             },
@@ -65,18 +66,18 @@ module.exports = {
       //     filename: "assets/images/[name].[hash:8][ext]", // 将图片单独提取出来放在assets/images目录下
       //   },
       // },
-      // {
-      //   test: /\.(ttf|woff|woff2|eot)$/i,
-      //   type: "asset",
-      //   parser: {
-      //     dataUrlCondition: {
-      //       maxSize: 10 * 1024,
-      //     },
-      //   },
-      //   generator: {
-      //     filename: "assets/fonts/[name].[hash:8][ext]",
-      //   },
-      // },
+      {
+        test: /\.(ttf|woff|woff2|eot|otf)$/i,
+        type: "asset",
+        parser: {
+          dataUrlCondition: {
+            maxSize: 10 * 1024,
+          },
+        },
+        generator: {
+          filename: "assets/fonts/[name].[hash:8][ext]",
+        },
+      },
       {
         test: /\.(css|less)$/,
         // exclude: /node_modules/,
@@ -86,12 +87,12 @@ module.exports = {
             : MiniCssExtractPlugin.loader,
           {
             loader: "css-loader",
-            // options: {
-            //   modules: {
-            //     localIdentName: "[name]_[local]--[contenthash:base64:5]", // 用于配置css Module中的类名生成规则 在css module中类名将会自动转换 以避免全局作用域的命名冲突 name时样式表文件名称 local是样式类名 然后加上基于内容生成的hash值
-            //   },
-            //   esModule: false,
-            // },
+            options: {
+              modules: {
+                localIdentName: "[name]_[local]--[contenthash:base64:5]", // 用于配置css Module中的类名生成规则 在css module中类名将会自动转换 以避免全局作用域的命名冲突 name时样式表文件名称 local是样式类名 然后加上基于内容生成的hash值
+              },
+              esModule: false,
+            },
           },
           {
             loader: "postcss-loader",
