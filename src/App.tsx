@@ -1,13 +1,14 @@
 // import React from "react";
-import style from "./index.module.less";
-import House from "@/assets/images/avator.png";
-import { Routes, Route, Link } from 'react-router-dom'
+
+import { Button } from "antd";
+import { Routes, Route, Link, useNavigate } from 'react-router-dom'
 import routes from "./routes";
 // import CoverTest from "./CoverTest";
 
 import { useMemo, useState, createContext } from "react";
 import { Main, Header } from "./component";
-
+// 导入全局样式
+import "./index.module.less";
 // 测试worktree
 // export type UserContextType = {
 //   user: Record<string, string | number>
@@ -31,6 +32,7 @@ function App() {
   const contextValue = useMemo(() => {
     return { user, theme }
   }, [user, theme])
+  const navigate = useNavigate()
   return (
     // <UserContext.Provider value={contextValue}>
     //   <Header />
@@ -43,14 +45,13 @@ function App() {
       <ThemeContext.Provider value={theme}>
         <Header />
         <Main />
-        <div className={style.myFont} onClick={() => {
-          setUser({ name: 'John', age: 18 })
-        }}>设置名称-{JSON.stringify(user)}</div>
-        <img src={House} alt="" />
         <nav>
           {routes.map(route => {
-            return <Link to={route.path}>Page{route.path}</ Link>
+            return <Link to={route.path} state={{ from: 'homePage' }}>Page{route.path}</ Link>
           })}
+          <Button onClick={() => {
+            navigate('/test/a?userId=123')
+          }}>跳转到PageA</Button>
         </nav>
         <Routes>
           {

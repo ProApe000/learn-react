@@ -1,39 +1,13 @@
 const path = require("path");
 const base = require("./webpack.base");
 const { merge } = require("webpack-merge");
+const webpack = require("webpack");
+const { error } = require("console");
 const BundleAnalyzerPlugin =
   require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 
 module.exports = merge(base, {
   mode: "development",
-  // module: {
-  //   rules: [
-  //     {
-  //       test: /\.less$/,
-  //       exclude: /node_modules/,
-  //       use: [
-  //         "style-loader",
-  //         {
-  //           loader: "css-loader",
-  //           options: {
-  //             modules: {
-  //               LocalsConvention: "camelCase", //
-  //             },
-  //           },
-  //         },
-  //         {
-  //           loader: "postcss-loader",
-  //           options: {
-  //             postcssOptions: {
-  //               plugins: [["postcss-preset-env", {}]],
-  //             },
-  //           },
-  //         },
-  //         "less-loader",
-  //       ],
-  //     },
-  //   ],
-  // },
   stats: {
     // 表示要获取所有的统计信息 (包括编译过程中生成的静态资源以及动态资源)
     all: false,
@@ -52,9 +26,34 @@ module.exports = merge(base, {
     // 显示模块被包含的原因
     reasons: true,
   },
-  plugins: [new BundleAnalyzerPlugin()],
+  devtool: "eval-cheap-module-source-map",
+  plugins: [
+    // new BundleAnalyzerPlugin(),
+    new webpack.HotModuleReplacementPlugin(),
+  ],
   devServer: {
     open: true,
     port: 8080,
+    hot: true,
+    liveReload: false,
+    client: {
+      overlay: {
+        errors: true,
+        warnings: false,
+      },
+      progress: true, // 在浏览器中显示编译进度
+      reconnect: true, //在断开链接时尝试重连
+    },
+    devMiddleware: {
+      writeToDisk: true, // 本地运行编译时将产物写入磁盘
+    },
+    //
+    historyApiFallback: {
+      rewrites: [
+        // Api 请求不重写
+        { from: /^\/api\/./, to: (context) => context.parsedUrl.pathname },
+        { from: /./, to: "/index.html" }, // 指向内存中编译后的index.html文件 本地运行时 webpack-dev-server的工作方式时 默认将文件保存在内存中 即使设置了writeToDisk 不会直接读取dist目录
+      ],
+    },
   },
 });

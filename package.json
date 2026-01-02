@@ -6,7 +6,8 @@
   "scripts": {
     "test": "jest --watchAll",
     "dev": "cross-env NODE_ENV=development webpack serve -c scripts/webpack.dev.js",
-    "build": "cross-env NODE_ENV=production webpack -c scripts/webpack.prod.js"
+    "build": "cross-env NODE_ENV=production webpack -c scripts/webpack.prod.js",
+    "spellcheck":"cspell src/**/* scripts/**/*"
   },
   "keywords": [],
   "author": "",
@@ -40,6 +41,7 @@
     "autoprefixer": "^10.4.19",
     "babel-loader": "^9.1.3",
     "cross-env": "^7.0.3",
+    "cspell": "^9.4.0",
     "css-loader": "^7.1.2",
     "css-minimizer-webpack-plugin": "^7.0.0",
     "css-modules-typescript-loader": "^4.0.1",

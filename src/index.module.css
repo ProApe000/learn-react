@@ -1,9 +1,5 @@
 @font-face {
   font-family: "HuSao";
-  src: url("assets/fonts/胡晓波骚包体.otf");
-}
-.myFont {
-  font-family: "HuSao";
-  font-weight: 500;
-  font-size: 300;
+  src: url("https://lf3-static.bytednsdoc.com/obj/eden-cn/211eh7uldvhpeht/myself/learn-react/fonts/HuSao.otf");
+  font-display: swap;
 }

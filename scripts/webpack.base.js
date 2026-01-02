@@ -112,6 +112,7 @@ module.exports = {
               lessOptions: {
                 javascriptEnabled: true,
               },
+              additionalData: `@import "${path.resolve(__dirname, "../src/variables.less")}";`,
             },
           },
         ],
@@ -121,6 +122,8 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, "../public/index.html"),
+      // filename: "index.html",
+      // publicPath: "/",
     }),
     new MiniCssExtractPlugin({
       filename: "assets/css/[contenthash:8].css", // 将css单独提测出来放在assets/css目录下
@@ -139,5 +142,7 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, "../dist"),
     filename: "[name].[contenthash:8].js",
+    publicPath: "/",
+    clean: true, // 每次构建前清理dist目录
   },
 };

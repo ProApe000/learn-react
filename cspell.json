@@ -1,0 +1,7 @@
+{
+  "version": "0.2",
+  "language": "en",
+  "ignoreRegExpList": [],
+  "ignorePaths": ["node_modules", "dist", "output", "test"],
+  "words": ["corejs", "okee", "Auxo", "ecom", "byted", "Cascader"]
+}
