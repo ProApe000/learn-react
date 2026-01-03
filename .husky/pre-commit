@@ -1,0 +1,4 @@
+#!/usr/bin/env sh
+
+# Run ESLint check before commit
+pnpm run lint

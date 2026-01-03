@@ -1,6 +1,6 @@
 export as namespace Shared;
 export type PageType =
-  | React.LazyExoticComponent<React.FC<>>
+  | React.LazyExoticComponent<React.FC>
   | React.ComponentType;
 
 export type IRoute = {

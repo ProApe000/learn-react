@@ -14,14 +14,14 @@
 //   return foo;
 // }
 
-console.log("b 开始");
-import { a } from "./A";
-export let b = "original";
-console.log("在 b 中，a =", a);
+console.log('b 开始');
+import { a } from './A';
+export let b = 'original';
+console.log('在 b 中，a =', a);
 setTimeout(() => {
-  console.log("在 b 中（延迟），a =", a);
+  console.log('在 b 中（延迟），a =', a);
 }, 0);
-b = "changed";
+b = 'changed';
 
 // console.log("b 开始");
 // import { a } from "./A";

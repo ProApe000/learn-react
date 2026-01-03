@@ -1,11 +1,11 @@
-import { getUserInfo } from "@/utils/math";
+import { getUserInfo } from '@/utils/math';
 
-import { test, expect } from "@jest/globals";
+import { test, expect } from '@jest/globals';
 
-test("test info", () => {
+test('test info', () => {
   expect(getUserInfo()).toEqual(getUserInfo());
 });
 
-test("test info 2", () => {
+test('test info 2', () => {
   expect(getUserInfo()).not.toBe(getUserInfo());
 });

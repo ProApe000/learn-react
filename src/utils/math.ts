@@ -6,6 +6,7 @@ export const sum = (a: number, b: number): number => {
  * @description 访问嵌套对象
  */
 export const get = <T>(
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   object: any,
   path: Array<string>,
   defaultValue?: T
@@ -20,7 +21,7 @@ export const get = <T>(
 
 export const getUserInfo = () => {
   return {
-    name: "moji",
+    name: 'moji',
     age: 24,
   };
 };
@@ -32,7 +33,7 @@ export const fetchUser = () => {
   return new Promise((resole) => {
     setTimeout(() => {
       resole({
-        name: "moji",
+        name: 'moji',
         age: 24,
       });
     }, 2000);

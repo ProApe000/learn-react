@@ -1,13 +1,11 @@
-const path = require("path");
-const base = require("./webpack.base");
-const { merge } = require("webpack-merge");
-const webpack = require("webpack");
-const { error } = require("console");
-const BundleAnalyzerPlugin =
-  require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
+const base = require('./webpack.base');
+const { merge } = require('webpack-merge');
+const webpack = require('webpack');
+// const BundleAnalyzerPlugin =
+//   require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 
 module.exports = merge(base, {
-  mode: "development",
+  mode: 'development',
   stats: {
     // 表示要获取所有的统计信息 (包括编译过程中生成的静态资源以及动态资源)
     all: false,
@@ -25,8 +23,14 @@ module.exports = merge(base, {
     chunkRelations: true,
     // 显示模块被包含的原因
     reasons: true,
+    // 显示警告信息
+    warnings: true,
+    // 显示错误信息
+    errors: true,
+    // 显示错误的详细信息
+    errorDetails: true,
   },
-  devtool: "eval-cheap-module-source-map",
+  devtool: 'eval-cheap-module-source-map',
   plugins: [
     // new BundleAnalyzerPlugin(),
     new webpack.HotModuleReplacementPlugin(),
@@ -52,7 +56,7 @@ module.exports = merge(base, {
       rewrites: [
         // Api 请求不重写
         { from: /^\/api\/./, to: (context) => context.parsedUrl.pathname },
-        { from: /./, to: "/index.html" }, // 指向内存中编译后的index.html文件 本地运行时 webpack-dev-server的工作方式时 默认将文件保存在内存中 即使设置了writeToDisk 不会直接读取dist目录
+        { from: /./, to: '/index.html' }, // 指向内存中编译后的index.html文件 本地运行时 webpack-dev-server的工作方式时 默认将文件保存在内存中 即使设置了writeToDisk 不会直接读取dist目录
       ],
     },
   },

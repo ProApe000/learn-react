@@ -1,13 +1,13 @@
-import { act } from "react";
-import MyLink from "@/component/myLink";
-import ReactDOM from "react-dom/client";
+import { act } from 'react';
+import MyLink from '@/component/myLink';
+import ReactDOM from 'react-dom/client';
 
-it("changes the class when hovered", () => {
-  const container = document.createElement("div");
+it('changes the class when hovered', () => {
+  const container = document.createElement('div');
   document.body.appendChild(container);
   const root = ReactDOM.createRoot(container);
   act(() => {
-    root.render(<MyLink page="www.baidu.com">百度</MyLink>);
+    root.render(<MyLink page="www.baidu.com">'百度'</MyLink>);
   });
   // 获取组件的 JSON 表示
   let tree = root.toJSON();

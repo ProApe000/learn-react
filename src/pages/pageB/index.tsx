@@ -1,9 +1,7 @@
-import { } from 'react'
-import { } from 'antd'
+import {} from 'react';
+import {} from 'antd';
 const PageB: React.FC = () => {
+  return <div>pageB</div>;
+};
 
-    return <div>pageB</div>
-}
-
-
-export default PageB
+export default PageB;

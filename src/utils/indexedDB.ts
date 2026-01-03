@@ -4,21 +4,21 @@ export function init(name: string, version = 1) {
   return new Promise((resolve, reject) => {
     openRequest = indexedDB.open(name, version);
     openRequest.onsuccess = function (event) {
-      console.log("onsuccess1", event);
+      console.log('onsuccess1', event);
       db = openRequest?.result;
       db.onversionchange = function () {
         db?.close();
-        alert("Database is outdated, please reload the page.");
+        alert('Database is outdated, please reload the page.');
       };
       console.log(db);
       resolve(db);
     };
     openRequest.onupgradeneeded = function (event) {
-      console.log("onupgradeneeded");
+      console.log('onupgradeneeded');
       db = openRequest?.result;
-      if (!db.objectStoreNames.contains("book")) {
-        const books = db.createObjectStore("book", { keyPath: "id" });
-        books.createIndex("price_idx", "price", { unique: false });
+      if (!db.objectStoreNames.contains('book')) {
+        const books = db.createObjectStore('book', { keyPath: 'id' });
+        books.createIndex('price_idx', 'price', { unique: false });
       }
       // switch (event?.oldVersion) {
       //   case 0:
@@ -29,12 +29,12 @@ export function init(name: string, version = 1) {
       //   default:
       //     break;
       // }
-      console.log("onupgradeneeded", event?.oldVersion);
+      console.log('onupgradeneeded', event?.oldVersion);
     };
 
     openRequest.onerror = function (event) {
-      console.log("onerror1", event);
-      reject(new Error("indexedDB open error"));
+      console.log('onerror1', event);
+      reject(new Error('indexedDB open error'));
     };
   });
 }
@@ -42,23 +42,23 @@ export function init(name: string, version = 1) {
 export function delDb(name: string) {
   return new Promise((resolve, reject) => {
     const deleteRequest = indexedDB.deleteDatabase(name);
-    console.log("deleteRequest", deleteRequest);
+    console.log('deleteRequest', deleteRequest);
     deleteRequest.onsuccess = function () {
-      console.log("delDb onsuccess");
+      console.log('delDb onsuccess');
       resolve(true);
     };
     deleteRequest.onerror = function () {
-      console.log("delDb onerror");
-      reject(new Error("delDb error"));
+      console.log('delDb onerror');
+      reject(new Error('delDb error'));
     };
   });
 }
 export function createObjectStore(name: string, keyPath?: string) {
   let objectStore: IDBObjectStore | null = null;
   if (db) {
-    objectStore = db.createObjectStore(name, { keyPath: keyPath ?? "id" });
+    objectStore = db.createObjectStore(name, { keyPath: keyPath ?? 'id' });
   }
-  console.log("objectStore", objectStore);
+  console.log('objectStore', objectStore);
   return objectStore;
 }
 export type Book = {
@@ -67,23 +67,23 @@ export type Book = {
   price: number;
 };
 export function addBook(book: Book) {
-  console.log("wc", db, book);
+  console.log('wc', db, book);
   return new Promise((resolve, reject) => {
     if (db) {
-      const transaction = db.transaction(["book"], "readwrite");
+      const transaction = db.transaction(['book'], 'readwrite');
       transaction.oncomplete = function () {
-        console.log("transaction oncomplete");
+        console.log('transaction oncomplete');
       };
       transaction.onabort = function () {
-        console.log("Error", transaction.error);
+        console.log('Error', transaction.error);
       };
-      const books = transaction.objectStore("book");
+      const books = transaction.objectStore('book');
       const req = books.add(book);
       req.onsuccess = function () {
         resolve(req.result);
       };
       req.onerror = function (event) {
-        if (req?.error?.name === "ConstraintError") {
+        if (req?.error?.name === 'ConstraintError') {
           event.preventDefault();
           // reject(new Error(req.error?.message));
         } else {
@@ -91,15 +91,15 @@ export function addBook(book: Book) {
         }
       };
     } else {
-      reject(new Error("数据库不存在"));
+      reject(new Error('数据库不存在'));
     }
   });
 }
 export function getBook(id: number) {
   return new Promise((resolve, reject) => {
     if (db) {
-      const transaction = db.transaction(["book"], "readonly");
-      const books = transaction.objectStore("book");
+      const transaction = db.transaction(['book'], 'readonly');
+      const books = transaction.objectStore('book');
       const req = books.get(id);
       // const req = books.getAll(IDBKeyRange.bound(2, 5));
       // const req = books.openCursor();
@@ -110,16 +110,16 @@ export function getBook(id: number) {
         reject(new Error(req.error?.message));
       };
     } else {
-      reject(new Error("数据库不存在"));
+      reject(new Error('数据库不存在'));
     }
   });
 }
 export function getBookByIndex() {
   return new Promise((resolve, reject) => {
     if (db) {
-      const transaction = db.transaction(["book"], "readonly");
-      const books = transaction.objectStore("book");
-      const bookIndex = books.index("price_idx");
+      const transaction = db.transaction(['book'], 'readonly');
+      const books = transaction.objectStore('book');
+      const bookIndex = books.index('price_idx');
       const req = bookIndex.getAll(IDBKeyRange.bound(0, 1));
       req.onsuccess = function () {
         resolve(req.result);
