@@ -34,6 +34,8 @@ module.exports = merge(base, {
   devtool: 'eval-cheap-module-source-map',
   plugins: [
     // new BundleAnalyzerPlugin(),
+    // 显示构建进度
+    new webpack.ProgressPlugin(),
     new webpack.HotModuleReplacementPlugin(),
     new EslintPlugin({
       extensions: ['.ts', '.tsx', '.js', '.jsx'],

@@ -2,6 +2,8 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
+const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin');
+
 module.exports = {
   entry: path.resolve(__dirname, '../src/index.tsx'),
   resolve: {
@@ -24,12 +26,29 @@ module.exports = {
                 {
                   targets:
                     'iOS 9, Android 4.4, last 2 versions, > 0.2%, not dead',
-                  useBuiltIns: 'usage',
+                  useBuiltIns: false,
                   corejs: 3,
                 },
               ],
               ['@babel/preset-react', { runtime: 'automatic' }],
               ['@babel/preset-typescript'],
+            ],
+            plugins: [
+              [
+                '@babel/plugin-transform-runtime',
+                {
+                  // 使用corejs 3的polyfill
+                  corejs: 3,
+                  // 提取helper函数
+                  helpers: true,
+                  // 使用regenerator runtime 用于async await 替换
+                  regenerator: true,
+                  // 不实用es模块 保持 commonjs
+                  useESModules: false,
+                  // 是否使用绝对路径引入runtime
+                  absoluteRuntime: false,
+                },
+              ],
             ],
           },
         },
@@ -125,6 +144,10 @@ module.exports = {
     new MiniCssExtractPlugin({
       filename: 'assets/css/[contenthash:8].css', // 将css单独提测出来放在assets/css目录下
     }),
+    // 内联所有匹配的runtime文件
+    new ScriptExtHtmlWebpackPlugin({
+      inline: /runtime.*.js$/,
+    }),
   ],
   optimization: {
     minimizer: [
@@ -135,6 +158,28 @@ module.exports = {
         // parallel true:  // 多进程并发执行，提升构建速度 。 运行时默认的并发数：os.cpus().length - 1
       }),
     ],
+    splitChunks: {
+      chunks: 'all',
+      cacheGroups: {
+        vendors: {
+          test: /[\\/]node_modules[\\/]/,
+          name: 'vendors',
+          priority: -10,
+        },
+        default: {
+          minChunks: 2,
+          priority: -20,
+          // 启用模块复用
+          reuseExistingChunk: true,
+        },
+      },
+    },
+    runtimeChunk: {
+      // name: 'runtime',
+      name: (entrypoint) => `runtime.${entrypoint.name}`,
+    },
+    // 开启tree shaking
+    usedExports: true,
   },
   output: {
     path: path.resolve(__dirname, '../dist'),
