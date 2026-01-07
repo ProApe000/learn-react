@@ -2,7 +2,6 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
-const EslintPlugin = require('eslint-webpack-plugin');
 module.exports = {
   entry: path.resolve(__dirname, '../src/index.tsx'),
   resolve: {
@@ -125,15 +124,6 @@ module.exports = {
     }),
     new MiniCssExtractPlugin({
       filename: 'assets/css/[contenthash:8].css', // 将css单独提测出来放在assets/css目录下
-    }),
-    new EslintPlugin({
-      extensions: ['.ts', '.tsx', '.js', '.jsx'],
-      exclude: ['node_modules', 'dist', 'coverage'],
-      fix: true,
-      emitError: true,
-      emitWarning: true,
-      failOnError: false,
-      failOnWarning: false,
     }),
   ],
   optimization: {

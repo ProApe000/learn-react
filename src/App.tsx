@@ -1,10 +1,9 @@
 // import React from "react";
 
-import { Button } from 'antd';
-import { Routes, Route, Link, useNavigate } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import routes from './routes';
 // import CoverTest from "./CoverTest";
-
+import Slider from './component/slider';
 import { useState, createContext } from 'react';
 import { Main, Header } from './component';
 // 导入全局样式
@@ -32,7 +31,6 @@ function App() {
   // const contextValue = useMemo(() => {
   //   return { user, theme };
   // }, [user, theme]);
-  const navigate = useNavigate();
   return (
     // <UserContext.Provider value={contextValue}>
     //   <Header />
@@ -45,26 +43,7 @@ function App() {
       <ThemeContext.Provider value={theme}>
         <Header />
         <Main />
-        <nav>
-          {routes.map((route) => {
-            return (
-              <Link
-                to={route.path}
-                key={route.path}
-                state={{ from: 'homePage' }}
-              >
-                Page{route.path}
-              </Link>
-            );
-          })}
-          <Button
-            onClick={() => {
-              navigate('/test/a?userId=123');
-            }}
-          >
-            跳转到PageA
-          </Button>
-        </nav>
+        <Slider></Slider>
         <Routes>
           {routes.map((route) => {
             return (

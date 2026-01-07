@@ -1,8 +1,9 @@
 const base = require('./webpack.base');
 const { merge } = require('webpack-merge');
 const webpack = require('webpack');
+const EslintPlugin = require('eslint-webpack-plugin');
 // const BundleAnalyzerPlugin =
-//   require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
+//   require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 module.exports = merge(base, {
   mode: 'development',
@@ -34,6 +35,15 @@ module.exports = merge(base, {
   plugins: [
     // new BundleAnalyzerPlugin(),
     new webpack.HotModuleReplacementPlugin(),
+    new EslintPlugin({
+      extensions: ['.ts', '.tsx', '.js', '.jsx'],
+      exclude: ['node_modules', 'dist', 'coverage'],
+      fix: true,
+      emitError: true,
+      emitWarning: true,
+      failOnError: false,
+      failOnWarning: false,
+    }),
   ],
   devServer: {
     open: true,
