@@ -1,7 +1,9 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const HtmlMinimizerPlugin = require('html-minimizer-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
+// const TerserPlugin = require('terser-webpack-plugin');
 const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin');
 
 module.exports = {
@@ -53,35 +55,51 @@ module.exports = {
           },
         },
       },
+      // {
+      //   test: /\.(jpe?g|png|svg|webp|gif)$/i,
+      //   use: [
+      //     {
+      //       loader: 'url-loader',
+      //       options: {
+      //         limit: 10 * 1024,
+      //         fallback: {
+      //           loader: 'file-loader',
+      //           options: {
+      //             name: 'assets/images/[name]-[contenthash:8].[ext]',
+      //           },
+      //         },
+      //       },
+      //     },
+      //   ],
+      // },
       {
-        test: /\.(jpe?g|png|svg|webp|gif)$/i,
-        use: [
+        test: /\.(jpg|png|jpeg|gif|svg|webp)$/i,
+        oneOf: [
           {
-            loader: 'url-loader',
-            options: {
-              limit: 10 * 1024,
-              fallback: {
-                loader: 'file-loader',
+            type: 'javascript/auto',
+            resourceQuery: /sizes?/,
+            use: [
+              {
+                loader: 'responsive-loader',
                 options: {
-                  name: 'assets/images/[name]-[contenthash:8].[ext]',
+                  adapter: require('responsive-loader/sharp'),
                 },
               },
+            ],
+          },
+          {
+            type: 'asset',
+            parser: {
+              dataUrlCondition: {
+                maxSize: 10 * 1024, // 10kb
+              },
+            },
+            generator: {
+              filename: 'assets/images/[name].[hash:8][ext]', // 将图片单独提取出来放在assets/images目录下
             },
           },
         ],
       },
-      // {
-      //   test: /\.(jpg|png|jpeg|gif|svg|webp)$/i,
-      //   type: "asset",
-      //   parser: {
-      //     dataUrlCondition: {
-      //       maxSize: 10 * 1024, // 10kb
-      //     },
-      //   },
-      //   generator: {
-      //     filename: "assets/images/[name].[hash:8][ext]", // 将图片单独提取出来放在assets/images目录下
-      //   },
-      // },
       {
         test: /\.(ttf|woff|woff2|eot|otf)$/i,
         type: 'asset',
@@ -150,12 +168,23 @@ module.exports = {
     }),
   ],
   optimization: {
+    // 开启压缩 默认只会开启TerserWebpackPlugin对js进行代码压缩
+    minimize: true,
     minimizer: [
+      // new TerserPlugin({}),
       // 在 webpack@5 中，你可以使用 `...` 语法来扩展现有的 minimizer（即 `terser-webpack-plugin`），将下一行取消注释
       // `...`,
       new CssMinimizerPlugin({
         // 默认开启
         // parallel true:  // 多进程并发执行，提升构建速度 。 运行时默认的并发数：os.cpus().length - 1
+      }),
+      new HtmlMinimizerPlugin({
+        minimizerOptions: {
+          //折叠 Boolean 型属性
+          collapseBooleanAttributes: true,
+          // 使用精简、doctype 定义
+          useShortDoctype: true,
+        },
       }),
     ],
     splitChunks: {

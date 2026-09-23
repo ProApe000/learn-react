@@ -37,6 +37,7 @@ module.exports = merge(base, {
     // 显示构建进度
     new webpack.ProgressPlugin(),
     new webpack.HotModuleReplacementPlugin(),
+    // 使用eslint Plugin替代eslint-loader 在模块构建完毕后执行检查 不会阻塞文件加载流程 这里也可以需要 因为已经使用了husky 在commit前对staged的文件做了 eslint检查
     new EslintPlugin({
       extensions: ['.ts', '.tsx', '.js', '.jsx'],
       exclude: ['node_modules', 'dist', 'coverage'],
